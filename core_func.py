@@ -105,7 +105,7 @@ def take_notes_chatgpt(
     messages = [{"role": "system", "content": task_hint}]
     user_chunks = split_text_by_token_limit_tiktoken(transcription, token_limit=2000)
     notes = ""
-    for chunk in user_chunks:
+    for idx, chunk in enumerate(user_chunks):
         messages.append({"role": "user", "content": chunk})
 
         prompt = {"model": model, "messages": messages}
@@ -143,7 +143,12 @@ def take_notes_chatgpt(
                     if line["role"] == "assistant":
                         file.write(f"{index}. {line}\n\n")
 
-        notes += chatgpt_reply["choices"][0]["message"]["content"]
+        if idx == 0:
+            notes += chatgpt_reply["choices"][0]["message"]["content"]
+        else:
+            notes += "\n".join(
+                chatgpt_reply["choices"][0]["message"]["content"].split("\n")[1:]
+            )
     os.remove("prompt.json")
 
     logger.info("Note-taking process completed.")

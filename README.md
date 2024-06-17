@@ -43,7 +43,7 @@
 > [!NOTE]
 > Before using ChatGPT API and Whisper API(not necessary), check [Pricing - OpenAI](https://openai.com/api/pricing/)
 
-## Usage: Executable by [PyInstaller](https://github.com/pyinstaller/pyinstaller)
+## Usage: Executable by [PyInstaller](https://github.com/pyinstaller/pyinstaller) (Windows)
 1. [Download Executable](https://drive.google.com/file/d/10KHfc_ePeJANmnRfeksi1xqCk_Vi8qnQ/view?usp=sharing)
 2. Run it and setup the APIs
    

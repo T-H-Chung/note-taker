@@ -102,7 +102,7 @@ class App(ctk.CTk):
         self.frame2.grid(row=2, column=0, pady=10, padx=20, sticky="w")
         self.label2 = ctk.CTkLabel(self.frame2, text="Whisper model:")
         self.label2.grid(row=0, column=0, padx=10)
-        self.opt_whisper = ctk.CTkOptionMenu(self.frame2, values=["medium.en", "medium", "large-v3", "Whisper API"], width=150)
+        self.opt_whisper = ctk.CTkOptionMenu(self.frame2, values=["small.en", "small", "medium.en", "medium", "large-v3", "Whisper API"], width=150)
         self.opt_whisper.set(setting.get("whisper_model", "medium.en"))
         self.opt_whisper.grid(row=0, column=1, padx=10)
 

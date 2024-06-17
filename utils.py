@@ -7,6 +7,8 @@ from faster_whisper import WhisperModel
 import sys
 import tiktoken
 import requests
+import platform
+
 
 language_dict = {
     "简体中文": ["zh", "zh-Hans", "zh-CN", "zh-SG", "zh-Hant", "zh-HK", "zh-MO", "zh-TW"],
@@ -159,7 +161,8 @@ def fasterWhisperTranscribe(file_path, language, model_size="medium.en", update_
     if logger is None:
         logger = logging.getLogger(__name__)
     
-    model = WhisperModel(model_size, device="auto", compute_type="float16")
+    compute_type = "float32" if platform.system() == 'Darwin' else "float16"
+    model = WhisperModel(model_size, device="auto", compute_type=compute_type)
 
     if model_size.endswith('.en'):
         segments, info = model.transcribe(file_path, beam_size=5, language='en')

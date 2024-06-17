@@ -19,7 +19,7 @@
 - Your own [OpenAI API](https://platform.openai.com/api-keys)
 - Your own [Notion API](https://www.notion.so/my-integrations)
 - Your own [Notion Database ID](https://stackoverflow.com/questions/67728038/where-to-find-database-id-for-my-database-in-notion)
-  and [Permissions of your database for Notion API](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions).
+  and [Permissions of your database for Notion API](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions)
 - CURL: if you don't have CURL, get it from [curl - Download](https://curl.se/download.html)
 - FFmpeg: if you don't have FFmpeg, get it from [Download FFmpeg](https://ffmpeg.org/download.html)
 

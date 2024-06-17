@@ -1,8 +1,9 @@
 ![Note-Taker_cut](https://github.com/T-H-Chung/note-taker/assets/111836220/393b4eb0-d0d7-420e-9295-206f8daebfd5)
 
 # Note-Taker - Take notes for YouTube Video
-**Integration of [youtube-dl](https://github.com/ytdl-org/youtube-dl), [Whisper](https://github.com/openai/whisper),
-[Faster Whisper](https://github.com/SYSTRAN/faster-whisper/tree/master), and [Notion](https://www.notion.so/)**
+**📝 Integration of [youtube-dl](https://github.com/ytdl-org/youtube-dl),
+[Faster Whisper](https://github.com/SYSTRAN/faster-whisper/tree/master)(from [Whisper](https://github.com/openai/whisper)), 
+[ChatGPT](https://chatgpt.com/), and [Notion](https://www.notion.so/)!**
 
 ### Why Note-Taker?
 - Quickly take notes into Notion by simply pasting the URL/video/audio/subtitle/text file!
@@ -32,5 +33,5 @@ An easier way for me to use cuBLAS and cuDNN 8, in Faster Whisper GitHub:
 > for Windows & Linux in a [single archive](https://github.com/Purfview/whisper-standalone-win/releases/tag/libs).
 > Decompress the archive and place the libraries in a directory included in the PATH.
 
-**Before using ChatGPT API and Whisper API (not necessary), check [Pricing - OpenAI](https://openai.com/api/pricing/)**
+**Before using ChatGPT API and Whisper API(not necessary), check [Pricing - OpenAI](https://openai.com/api/pricing/)**
 

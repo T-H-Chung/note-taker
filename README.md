@@ -3,7 +3,7 @@
 # Note-Taker - Take notes for YouTube Video
 **📝 Integration of [youtube-dl](https://github.com/ytdl-org/youtube-dl),
 [Faster Whisper](https://github.com/SYSTRAN/faster-whisper/tree/master)(from [Whisper](https://github.com/openai/whisper)), 
-[ChatGPT](https://chatgpt.com/), and [Notion](https://www.notion.so/)!**
+[ChatGPT](https://chatgpt.com/), and [Notion](https://www.notion.so/) with GUI!**
 
 ### Why Note-Taker?
 - Quickly take notes into Notion by simply pasting the URL/video/audio/subtitle/text file!
@@ -26,12 +26,45 @@
 - [cuBLAS for CUDA 12](https://developer.nvidia.com/cublas)
 - [cuDNN 8 for CUDA 12](https://developer.nvidia.com/rdp/cudnn-archive)
   
-An easier way for me to use cuBLAS and cuDNN 8, in Faster Whisper GitHub:
-> **Download the libraries from Purfview's repository (Windows & Linux)**
+**You can use CPU and Whisper API if you don't want to use a GPU**
+  
+> [!TIP]
+> An easier way for me to use cuBLAS and cuDNN 8, in Faster Whisper GitHub:
+> > **Download the libraries from Purfview's repository (Windows & Linux)**
+> > 
+> > Purfview's [whisper-standalone-win](https://github.com/Purfview/whisper-standalone-win) provides the required NVIDIA libraries
+> > for Windows & Linux in a [single archive](https://github.com/Purfview/whisper-standalone-win/releases/tag/libs).
+> > Decompress the archive and place the libraries in a directory included in the `PATH`.
 > 
-> Purfview's [whisper-standalone-win](https://github.com/Purfview/whisper-standalone-win) provides the required NVIDIA libraries
-> for Windows & Linux in a [single archive](https://github.com/Purfview/whisper-standalone-win/releases/tag/libs).
-> Decompress the archive and place the libraries in a directory included in the PATH.
+> You can also place the archives in the same folder as the executable or Python code below
 
-**Before using ChatGPT API and Whisper API(not necessary), check [Pricing - OpenAI](https://openai.com/api/pricing/)**
+> [!NOTE]
+> Before using ChatGPT API and Whisper API(not necessary), check [Pricing - OpenAI](https://openai.com/api/pricing/)
 
+## Usage: Executable by [PyInstaller](https://github.com/pyinstaller/pyinstaller)
+1. [Download Executable](https://drive.google.com/file/d/10KHfc_ePeJANmnRfeksi1xqCk_Vi8qnQ/view?usp=sharing)
+2. Run it and setup the APIs
+   
+![setting](https://github.com/T-H-Chung/note-taker/assets/111836220/8f2de75c-6a98-48a8-83eb-4d8a38372367)
+
+4. Paste the link/file path and then setup link/file language and your preference
+
+![main_page](https://github.com/T-H-Chung/note-taker/assets/111836220/a003d68e-cd08-4823-a1a0-11f45b00985c)
+
+## Usage: Python Usage
+![requirements](https://img.shields.io/badge/Python->3.10-3480eb.svg?longCache=true&style=flat&logo=python)
+1. Clone the repo
+2. Install Python packages
+   ```
+   pip install -r requirements.txt
+   ```
+3. Run Python script and setup the APIs by GUI (like in Usage: Executable)
+   ```
+   python main.py
+   ```
+4. Paste the link/file path and then setup link/file language and your preference (like in Usage: Executable)
+
+## Known Issues
+- Executable will always open a terminal window: It's an issue in PyInstaller.
+- App crashes and exits suddenly after transcribing: The app will save transcription into a `.txt` file in the same folder.
+  Use it to take notes. Or choose a smaller Whisper model.

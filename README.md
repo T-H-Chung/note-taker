@@ -70,3 +70,6 @@
 - Executable will always open a terminal window: It's an issue in PyInstaller.
 - App crashes and exits suddenly after transcribing: The app will save transcription into a `.txt` file in the same folder.
   Use it to take notes. Or choose a smaller Whisper model.
+
+<a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
+  

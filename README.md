@@ -6,18 +6,20 @@
 [ChatGPT](https://chatgpt.com/), and [Notion](https://www.notion.so/) with GUI!**
 
 ### Why Note-Taker?
-- Quickly take notes into Notion by simply pasting the URL/video/audio/subtitle/text file!
-- Utilize the GPU computing power of your local machine. Take notes with Whisper model for free!
+- Quickly take notes into Notion by simply **pasting the URL/video/audio/subtitle/text file path**!
+- Utilize the **GPU** computing power of your local machine. Take notes with Whisper model for **free**!
   
 ![demo](https://github.com/T-H-Chung/note-taker/assets/111836220/3e476585-3b70-4221-85ee-9b97d986a39a)
 
-**Spported Languages:** English, 简体中文, 繁體中文, Español, Français, Deutsch, Português, Русский, 日本語, العربية, हिन्दी, 한국어, Italiano
+> [!NOTE]
+> **Spported Languages:** English, 简体中文, 繁體中文, Español, Français, Deutsch, Português, Русский, 日本語, العربية, हिन्दी, 한국어, Italiano
 
 ## Quick Start
 ### Prerequisite
 - Your own [OpenAI API](https://platform.openai.com/api-keys)
 - Your own [Notion API](https://www.notion.so/my-integrations)
 - Your own [Notion Database ID](https://stackoverflow.com/questions/67728038/where-to-find-database-id-for-my-database-in-notion)
+  and [Permissions of your database for Notion API](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions).
 - CURL: if you don't have CURL, get it from [curl - Download](https://curl.se/download.html)
 - FFmpeg: if you don't have FFmpeg, get it from [Download FFmpeg](https://ffmpeg.org/download.html)
 

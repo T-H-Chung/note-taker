@@ -8,8 +8,8 @@
 ### Why Note-Taker?
 - Quickly take notes into Notion by simply **pasting the URL/video/audio/subtitle/text file path**!
 - Utilize the **GPU** computing power of your local machine. Take notes with Whisper model for **free**!
-  
-![demo](https://github.com/T-H-Chung/note-taker/assets/111836220/3e476585-3b70-4221-85ee-9b97d986a39a)
+
+![demo-white](https://github.com/T-H-Chung/note-taker/assets/111836220/af37c44e-ed79-46bd-b15f-192f91c94801)
 
 > [!NOTE]
 > **Spported Languages:** English, 简体中文, 繁體中文, Español, Français, Deutsch, Português, Русский, 日本語, العربية, हिन्दी, 한국어, Italiano

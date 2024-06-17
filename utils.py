@@ -160,12 +160,15 @@ def download_subtitle(youtube_url, language=["en"], output_path="./", logger=Non
         info = ydl.extract_info(youtube_url, download=False)
         if "subtitles" in info and find_matching_item(language, info["subtitles"]):
             sub_language = find_matching_item(language, info["subtitles"])
-            logger.info("Subtitle available")
-            ydl.download([youtube_url])
-            subtitle_format = info["requested_subtitles"][sub_language]["ext"]
-            subtitle_file = ydl.prepare_filename(info).replace(
-                ".mp4", f".{sub_language}.{subtitle_format}"
-            )
+            if info["requested_subtitles"] == sub_language:
+                logger.info("Subtitle available")
+                ydl.download([youtube_url])
+                subtitle_format = info["requested_subtitles"][sub_language]["ext"]
+                subtitle_file = ydl.prepare_filename(info).replace(
+                    ".mp4", f".{sub_language}.{subtitle_format}"
+                )
+            else:
+                logger.warning(f"No subtitle format available in the selected language.")
         else:
             logger.warning(f"No subtitles available in the selected language.")
 

@@ -258,6 +258,7 @@ class App(ctk.CTk):
                         self.setting.get("chatgpt_api", ""),
                         self.update_progress_bar,
                         logger,
+                        file_remove=False,
                     )
 
             self.update_progress_bar(0.9)

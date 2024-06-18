@@ -1,6 +1,4 @@
 import os
-import subprocess
-import json
 import yt_dlp
 import logging
 from faster_whisper import WhisperModel
@@ -8,6 +6,7 @@ import sys
 import tiktoken
 import requests
 import platform
+from openai import OpenAI
 
 
 language_dict = {
@@ -157,6 +156,10 @@ def download_subtitle(
         logger.info(f"No subtitles available in the requested language: {lang}")
         return None, None
 
+    illegal_characters = ["\\", "/", ":", "*", "?", '"', "<", ">", "|"]
+    for char in illegal_characters:
+        title = title.replace(char, "")
+
     # Check for formats
     available_subs = subtitles[lang]
     for fmt in preferred_formats:
@@ -209,9 +212,11 @@ def convert_srt_vtt_to_text(srt_vtt_file):
 def download_audio(url, logger=None):
     if logger is None:
         logger = logging.getLogger(__name__)
-    
-    title, subtitles =  get_video_info(url)
-    title = title.replace("|", "")
+
+    title, subtitles = get_video_info(url)
+    illegal_characters = ["\\", "/", ":", "*", "?", '"', "<", ">", "|"]
+    for char in illegal_characters:
+        title = title.replace(char, "")
     ydl_opts = {"format": "bestaudio", "outtmpl": f"{title}.%(ext)s", "quiet": True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
@@ -219,48 +224,35 @@ def download_audio(url, logger=None):
         ext = info.get("ext")
 
     logger.info(f"Audio downloaded and saved as '{title}.{ext}'")
-    return f'{title}.{ext}'
-
-
-def run_command(command, logger=None):
-    if logger is None:
-        logger = logging.getLogger(__name__)
-
-    try:
-        result = subprocess.run(
-            command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        output = result.stdout.decode("utf-8")
-        return json.loads(output)
-    except subprocess.CalledProcessError as e:
-        logger.error("Command failed with error: %s", e.stderr.decode("utf-8"))
-        return {"error": e.stderr.decode("utf-8")}
-    except json.JSONDecodeError as e:
-        logger.error("Failed to parse JSON: %s", str(e))
-        return {"error": f"Failed to parse JSON: {str(e)}"}
+    return f"{title}.{ext}"
 
 
 def whisperAPITranscribe(audio_file, language, api_token, logger=None):
-    command = [
-        "curl",
-        "https://api.openai.com/v1/audio/transcriptions",
-        "-H",
-        f"Authorization: Bearer {api_token}",
-        "-F",
-        f"file=@{audio_file}",
-        "-F",
-        "model=whisper-1",
-        "-F",
-        f"language={language}",
-        "-F",
-        "task=transcribe",
-    ]
-    transcription = run_command(command, logger=logger)["text"]
+    if logger is None:
+        logger = logging.getLogger(__name__)
+    transcription = None
+    # try:
+    client = OpenAI(api_key=api_token)
+    with open(audio_file, "rb") as audio:
+        transcription = client.audio.transcriptions.create(
+            model="whisper-1", file=audio, language=language, response_format="text"
+        )
+
+    print(transcription, "gfdgfdgdg")
+
+    # except Exception as e:
+    #     logger.error(e)
+
     return transcription
 
 
 def fasterWhisperTranscribe(
-    file_path, language, model_size="medium.en", update_progress_bar=None, logger=None
+    file_path,
+    language,
+    model_size="medium.en",
+    update_progress_bar=None,
+    logger=None,
+    file_remove=True,
 ):
     if logger is None:
         logger = logging.getLogger(__name__)
@@ -284,7 +276,8 @@ def fasterWhisperTranscribe(
     with open(file_path + ".txt", "w", encoding="utf-8") as file:
         file.write(transcription)
 
-    os.remove(file_path)
+    if file_remove:
+        os.remove(file_path)
 
     return transcription
 

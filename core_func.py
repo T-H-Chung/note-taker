@@ -1,4 +1,5 @@
 import os
+from openai import OpenAI
 import requests
 import json
 import logging
@@ -11,7 +12,6 @@ from utils import (
     download_audio,
     fasterWhisperTranscribe,
     whisperAPITranscribe,
-    run_command,
     parse_input,
     split_text_by_token_limit_tiktoken,
     check_property_exists,
@@ -27,6 +27,7 @@ def get_transcription_from_audio(
     api_token="",
     update_progress_bar=None,
     logger=None,
+    file_remove=True,
 ):
     if logger is None:
         logger = logging.getLogger(__name__)
@@ -34,7 +35,8 @@ def get_transcription_from_audio(
         transcription = whisperAPITranscribe(
             audio_file, language_dict[language][0], api_token, logger=logger
         )
-        os.remove(audio_file)
+        if file_remove:
+            os.remove(audio_file)
     else:
         transcription = fasterWhisperTranscribe(
             audio_file,
@@ -42,6 +44,7 @@ def get_transcription_from_audio(
             model_size=model_size,
             update_progress_bar=update_progress_bar,
             logger=logger,
+            file_remove=file_remove,
         )
         os.remove(audio_file + ".txt")
     return transcription
@@ -100,31 +103,23 @@ def take_notes_chatgpt(
         with open("conversation.txt", "w", encoding="utf-8") as file:
             pass
 
+    client = OpenAI(
+        api_key=api_token,
+    )
+    logging.getLogger("openai").setLevel(logging.ERROR)
     model = "gpt-3.5-turbo-0125" if model_name == "GPT-3.5-turbo" else "gpt-4o"
     task_hint = f'take the well-structured notes (in {language})(in sequence) including all the detail information (especially the numeric data) in every knowledge point/topic(can be one or many) (especially arguments from both sides of the controversy) in the transcription. (Format the structure with "- " for the topic and "* " for a detail information under its topic, separate each topic with an empty line, for example "- A \n* a\n- B")'
     messages = [{"role": "system", "content": task_hint}]
     user_chunks = split_text_by_token_limit_tiktoken(transcription, token_limit=2000)
     notes = ""
+
     for idx, chunk in enumerate(user_chunks):
         messages.append({"role": "user", "content": chunk})
 
-        prompt = {"model": model, "messages": messages}
-        output_file = "prompt.json"
-        with open(output_file, "w") as file:
-            json.dump(prompt, file, indent=4)
+        chatgpt_reply = client.chat.completions.create(model=model, messages=messages)
+        chatgpt_reply_msg = chatgpt_reply.choices[0].message.content
 
-        command = [
-            "curl",
-            "https://api.openai.com/v1/chat/completions",
-            "-H",
-            f"Authorization: Bearer {api_token}",
-            "-H",
-            "Content-Type: application/json",
-            "-d",
-            "@prompt.json",
-        ]
-        chatgpt_reply = run_command(command, logger=logger)
-        messages.append(chatgpt_reply["choices"][0]["message"])
+        messages.append({"role": "assistant", "content": chatgpt_reply_msg})
         messages.append(
             {
                 "role": "system",
@@ -144,12 +139,9 @@ def take_notes_chatgpt(
                         file.write(f"{index}. {line}\n\n")
 
         if idx == 0:
-            notes += chatgpt_reply["choices"][0]["message"]["content"]
+            notes += chatgpt_reply_msg
         else:
-            notes += "\n".join(
-                chatgpt_reply["choices"][0]["message"]["content"].split("\n")[1:]
-            )
-    os.remove("prompt.json")
+            notes += "\n".join(chatgpt_reply_msg.split("\n")[1:])
 
     logger.info("Note-taking process completed.")
     return notes

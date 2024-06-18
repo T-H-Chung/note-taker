@@ -16,7 +16,8 @@
 > **Spported Languages:** English, 简体中文, 繁體中文, Español, Français, Deutsch, Português, Русский, 日本語, العربية, हिन्दी, 한국어, Italiano
 
 > [!NOTE]
-> The corresponding subtitles will be downloaded if available.
+> The corresponding subtitles will be downloaded if available. -> No time/GPU comsuming for transcription. \
+> **Spported Subtitles:** srt, vtt, ass
 
 ## Quick Start
 ### Prerequisite

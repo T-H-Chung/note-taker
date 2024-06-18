@@ -1,13 +1,13 @@
 ![Note-Taker_cut](https://github.com/T-H-Chung/note-taker/assets/111836220/393b4eb0-d0d7-420e-9295-206f8daebfd5)
 
-# Note-Taker - Take notes for YouTube Video
-**📝 Integration of [youtube-dl](https://github.com/ytdl-org/youtube-dl),
+# Note-Taker - Take Notes for Online Video
+**📝 Integration of [yt-dlp](https://github.com/yt-dlp/yt-dlp),
 [Faster Whisper](https://github.com/SYSTRAN/faster-whisper/tree/master)(from [Whisper](https://github.com/openai/whisper)), 
 [ChatGPT](https://chatgpt.com/), and [Notion](https://www.notion.so/) with GUI!**
 
 ### Why Note-Taker?
-- Quickly take notes into Notion by simply **pasting the URL/video/audio/subtitle/text file path**!
-- Utilize the **GPU** computing power of your local machine. Take notes with Whisper model for **free**!
+- Quickly take notes into Notion by simply **pasting the URL/video/audio/subtitle/text file path!**
+- Utilize the **GPU** computing power of your local machine. Take notes with Whisper model for **free!**
 
 ![demo-white](https://github.com/T-H-Chung/note-taker/assets/111836220/af37c44e-ed79-46bd-b15f-192f91c94801)
 

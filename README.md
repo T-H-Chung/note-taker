@@ -7,6 +7,7 @@
 
 ### Why Note-Taker?
 - Quickly take notes into Notion by simply **pasting the URL/video/audio/subtitle/text file path!**
+- Support thousands of sites including **YouTube** and **BiliBili**, check [supported sites](https://www.similarweb.com/zh-tw/website/imdb.com/).
 - Utilize the **GPU** computing power of your local machine. Take notes with Whisper model for **free!**
 
 ![demo-white](https://github.com/T-H-Chung/note-taker/assets/111836220/af37c44e-ed79-46bd-b15f-192f91c94801)
@@ -71,7 +72,6 @@
 4. Paste the link/file path and then setup link/file language and your preference (like in Usage: Executable)
 
 ## Known Issues
-- Executable will always open a terminal window: It's an issue in PyInstaller.
 - App crashes and exits suddenly after transcribing: The app will save transcription into a `.txt` file in the same folder.
   Use it to take notes. Or choose a smaller Whisper model.
 

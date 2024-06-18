@@ -1,7 +1,7 @@
 import os
 import subprocess
 import json
-import youtube_dl
+import yt_dlp
 import logging
 from faster_whisper import WhisperModel
 import sys
@@ -132,53 +132,47 @@ def find_matching_item(a, b):
     return None
 
 
-def get_video_title(youtube_url):
+def get_video_info(url):
     ydl_opts = {
-        "quiet": True,
-        "skip_download": True,
+        'quiet': True,
+        'skip_download': True,
     }
 
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(youtube_url, download=False)
-        video_title = info_dict.get("title", None)
-    return video_title
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=False)
+        title = info.get('title')
+        subtitles = info.get('subtitles')
 
+    return title, subtitles
 
-def download_subtitle(youtube_url, language=["en"], output_path="./", logger=None):
+def download_subtitle(url, lang='en', preferred_formats=['srt', 'vtt', 'ass'], logger=None):
     if logger is None:
         logger = logging.getLogger(__name__)
+    title, subtitles = get_video_info(url)
 
-    ydl_opts = {
-        "writesubtitles": True,
-        "subtitlesformat": "srt/vtt/ass",
-        "skip_download": True,  # Do not download the video
-        "outtmpl": output_path + "%(title)s.%(ext)s",
-    }
-
-    subtitle_file = None
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(youtube_url, download=False)
-    if "subtitles" in info and find_matching_item(language, info["subtitles"]):
-        sub_language = find_matching_item(language, info["subtitles"])
-        sub_ydl_opts = ydl_opts.copy()
-        sub_ydl_opts["subtitleslangs"] = [sub_language]
-        logger.info("Subtitle available")
-        with youtube_dl.YoutubeDL(sub_ydl_opts) as sub_ydl:
-            sub_ydl.download([youtube_url])
-        file_list = os.listdir(".")
-        for file_name in file_list:
-            if ydl.prepare_filename(info)[:-4] in file_name:
-                break
-        subtitle_file = file_name
-    else:
-        logger.warning(f"No subtitles available in the selected language.")
-
-    return subtitle_file
-
-
-def get_file_format(file_path):
-    _, file_extension = os.path.splitext(file_path)
-    return file_extension
+    if not subtitles or lang not in subtitles:
+        logger.info(f"No subtitles available in the requested language: {lang}")
+        return None, None
+    
+    # Check for formats
+    available_subs = subtitles[lang]
+    for fmt in preferred_formats:
+        for sub in available_subs:
+            if sub['ext'] == fmt:
+                ydl_opts = {
+                    'quiet': True,
+                    'skip_download': True,
+                    'writesubtitles': True,
+                    'subtitlesformat': fmt,
+                    'subtitleslangs': [lang],
+                    'outtmpl': title,
+                }
+                
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([url])
+                logger.info(f"Subtitle downloaded and saved as '{title}.{lang}.{fmt}'")
+                return f'{title}.{lang}.{fmt}', fmt
+    return None, None
 
 
 def convert_ass_to_text(ass_file):
@@ -208,29 +202,23 @@ def convert_srt_vtt_to_text(srt_vtt_file):
 
     return " ".join(transcription)
 
-
-def download_audio(youtube_url, output_path="./", logger=None):
+def download_audio(url, logger=None):
     if logger is None:
         logger = logging.getLogger(__name__)
-
-    filename = None
-
-    def download_hook(d):
-        nonlocal filename
-        if d["status"] == "finished":
-            filename = d["filename"]
-
     ydl_opts = {
-        "format": "bestaudio",
-        "outtmpl": output_path + "%(title)s.%(ext)s",
-        "progress_hooks": [download_hook],
+        'format': 'bestaudio',
+        'outtmpl': '%(title)s.%(ext)s',
+        'quiet': True
     }
 
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([youtube_url])
-
-    logger.info(f"Audio downloaded: {filename}")
-    return filename
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
+        info = ydl.extract_info(url, download=False)
+        title = info.get('title')
+        ext = info.get('ext')
+    
+    logger.info(f"Audio downloaded and saved as '{title}.{ext}'")
+    return f'{title}.{ext}'
 
 
 def run_command(command, logger=None):

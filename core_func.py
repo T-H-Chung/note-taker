@@ -3,9 +3,9 @@ import requests
 import json
 import logging
 from utils import (
-    get_video_title,
+    get_video_info,
     download_subtitle,
-    get_file_format,
+    find_matching_item,
     convert_ass_to_text,
     convert_srt_vtt_to_text,
     download_audio,
@@ -58,16 +58,16 @@ def get_transcription_from_url(
     if logger is None:
         logger = logging.getLogger(__name__)
 
-    title = get_video_title(youtube_url)
-    subtitle_file = download_subtitle(
-        youtube_url, language=language_dict[language], logger=logger
+    title, subtitles = get_video_info(youtube_url)
+    sub_language = find_matching_item(language_dict[language], subtitles)
+    subtitle_file, sub_format = download_subtitle(
+        youtube_url, lang=sub_language, logger=logger
     )
 
     if subtitle_file and os.path.exists(subtitle_file):
-        subtitle_format = get_file_format(subtitle_file)
-        if subtitle_format in [".srt", ".vtt"]:
+        if sub_format in ["srt", "vtt"]:
             transcription = convert_srt_vtt_to_text(subtitle_file)
-        elif subtitle_format == ".ass":
+        elif sub_format == "ass":
             transcription = convert_ass_to_text(subtitle_file)
         else:
             transcription = None

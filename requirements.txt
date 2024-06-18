@@ -1,4 +1,4 @@
-youtube-dl-nightly==2024.6.12
+yt-dlp==2024.5.27
 faster-whisper==1.0.2
 customtkinter==5.2.2
 pillow==10.3.0

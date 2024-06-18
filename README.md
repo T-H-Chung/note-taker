@@ -59,7 +59,7 @@
 ![main_page](https://github.com/T-H-Chung/note-taker/assets/111836220/a003d68e-cd08-4823-a1a0-11f45b00985c)
 
 ## Usage: Python Usage
-![requirements](https://img.shields.io/badge/Python->3.10-3480eb.svg?longCache=true&style=flat&logo=python)
+![requirements](https://img.shields.io/badge/Python->3.11-3480eb.svg?longCache=true&style=flat&logo=python)
 1. Clone the repo
 2. Install Python packages
    ```

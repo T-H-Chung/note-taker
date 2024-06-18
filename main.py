@@ -92,7 +92,7 @@ class App(ctk.CTk):
         # Create entry fields for the main interface
         self.frame1 = ctk.CTkFrame(self.main_frame, fg_color="transparent")
         self.frame1.grid(row=0, column=0, pady=10, padx=20, sticky="w")
-        self.label1 = ctk.CTkLabel(self.frame1, text="YouTube URL/File Path:")
+        self.label1 = ctk.CTkLabel(self.frame1, text="URL/File Path:")
         self.label1.grid(row=0, column=0, padx=10)
         self.entry1 = ctk.CTkEntry(
             self.frame1,

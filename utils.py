@@ -134,18 +134,21 @@ def find_matching_item(a, b):
 
 def get_video_info(url):
     ydl_opts = {
-        'quiet': True,
-        'skip_download': True,
+        "quiet": True,
+        "skip_download": True,
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
-        title = info.get('title')
-        subtitles = info.get('subtitles')
+        title = info.get("title")
+        subtitles = info.get("subtitles")
 
     return title, subtitles
 
-def download_subtitle(url, lang='en', preferred_formats=['srt', 'vtt', 'ass'], logger=None):
+
+def download_subtitle(
+    url, lang="en", preferred_formats=["srt", "vtt", "ass"], logger=None
+):
     if logger is None:
         logger = logging.getLogger(__name__)
     title, subtitles = get_video_info(url)
@@ -153,25 +156,25 @@ def download_subtitle(url, lang='en', preferred_formats=['srt', 'vtt', 'ass'], l
     if not subtitles or lang not in subtitles:
         logger.info(f"No subtitles available in the requested language: {lang}")
         return None, None
-    
+
     # Check for formats
     available_subs = subtitles[lang]
     for fmt in preferred_formats:
         for sub in available_subs:
-            if sub['ext'] == fmt:
+            if sub["ext"] == fmt:
                 ydl_opts = {
-                    'quiet': True,
-                    'skip_download': True,
-                    'writesubtitles': True,
-                    'subtitlesformat': fmt,
-                    'subtitleslangs': [lang],
-                    'outtmpl': title,
+                    "quiet": True,
+                    "skip_download": True,
+                    "writesubtitles": True,
+                    "subtitlesformat": fmt,
+                    "subtitleslangs": [lang],
+                    "outtmpl": title,
                 }
-                
+
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
                 logger.info(f"Subtitle downloaded and saved as '{title}.{lang}.{fmt}'")
-                return f'{title}.{lang}.{fmt}', fmt
+                return f"{title}.{lang}.{fmt}", fmt
     return None, None
 
 
@@ -202,23 +205,20 @@ def convert_srt_vtt_to_text(srt_vtt_file):
 
     return " ".join(transcription)
 
+
 def download_audio(url, logger=None):
     if logger is None:
         logger = logging.getLogger(__name__)
-    ydl_opts = {
-        'format': 'bestaudio',
-        'outtmpl': '%(title)s.%(ext)s',
-        'quiet': True
-    }
+    ydl_opts = {"format": "bestaudio", "outtmpl": "%(title)s.%(ext)s", "quiet": True}
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
         info = ydl.extract_info(url, download=False)
-        title = info.get('title')
-        ext = info.get('ext')
-    
+        title = info.get("title")
+        ext = info.get("ext")
+
     logger.info(f"Audio downloaded and saved as '{title}.{ext}'")
-    return f'{title}.{ext}'
+    return f"{title}.{ext}"
 
 
 def run_command(command, logger=None):

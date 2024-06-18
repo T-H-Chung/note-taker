@@ -209,16 +209,17 @@ def convert_srt_vtt_to_text(srt_vtt_file):
 def download_audio(url, logger=None):
     if logger is None:
         logger = logging.getLogger(__name__)
-    ydl_opts = {"format": "bestaudio", "outtmpl": "%(title)s.%(ext)s", "quiet": True}
-
+    
+    title, subtitles =  get_video_info(url)
+    title = title.replace("|", "")
+    ydl_opts = {"format": "bestaudio", "outtmpl": f"{title}.%(ext)s", "quiet": True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
         info = ydl.extract_info(url, download=False)
-        title = info.get("title")
         ext = info.get("ext")
 
     logger.info(f"Audio downloaded and saved as '{title}.{ext}'")
-    return f"{title}.{ext}"
+    return f'{title}.{ext}'
 
 
 def run_command(command, logger=None):

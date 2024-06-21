@@ -21,8 +21,8 @@
 
 ## Quick Start
 ### Prerequisite
-- Your own [OpenAI API token](https://platform.openai.com/api-keys) (You need to have a balance)
-- Your own [Notion API token](https://www.notion.so/my-integrations)
+- Your own [OpenAI API key](https://platform.openai.com/api-keys) (You need to have a balance)
+- Your own [Notion API key](https://www.notion.so/my-integrations)
 - Your own [Notion Database ID](https://stackoverflow.com/questions/67728038/where-to-find-database-id-for-my-database-in-notion)
   ([How to create a database](https://www.notion.so/help/guides/creating-a-database))
 - [Permissions of your database for Notion API](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions)
@@ -65,7 +65,7 @@
    ```
    pip install -r requirements.txt
    ```
-3. Run Python script and setup the API tokens by GUI (like in Usage: Executable)
+3. Run Python script and setup the API keys by GUI (like in Usage: Executable)
    ```
    python main.py
    ```

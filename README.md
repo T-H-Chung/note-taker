@@ -21,8 +21,8 @@
 
 ## Quick Start
 ### Prerequisite
-- Your own [OpenAI API](https://platform.openai.com/api-keys) (You need to have a balance)
-- Your own [Notion API](https://www.notion.so/my-integrations)
+- Your own [OpenAI API token](https://platform.openai.com/api-keys) (You need to have a balance)
+- Your own [Notion API token](https://www.notion.so/my-integrations)
 - Your own [Notion Database ID](https://stackoverflow.com/questions/67728038/where-to-find-database-id-for-my-database-in-notion)
   ([How to create a database](https://www.notion.so/help/guides/creating-a-database))
 - [Permissions of your database for Notion API](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions)
@@ -50,7 +50,7 @@
 
 ## Usage: Executable by [PyInstaller](https://github.com/pyinstaller/pyinstaller) (Windows)
 1. [Download Executable](https://drive.google.com/file/d/10KHfc_ePeJANmnRfeksi1xqCk_Vi8qnQ/view?usp=sharing)
-2. Run it and setup the APIs
+2. Run it and setup the API tokens
    
 ![setting](https://github.com/T-H-Chung/note-taker/assets/111836220/8f2de75c-6a98-48a8-83eb-4d8a38372367)
 
@@ -65,7 +65,7 @@
    ```
    pip install -r requirements.txt
    ```
-3. Run Python script and setup the APIs by GUI (like in Usage: Executable)
+3. Run Python script and setup the API tokens by GUI (like in Usage: Executable)
    ```
    python main.py
    ```

@@ -350,7 +350,7 @@ class App(ctk.CTk):
             "database_id": self.entry3.get(),
             "language": self.setting.get("language", "English"),
             "whisper_model": self.setting.get("whisper_model", "medium.en"),
-            "gpt_model": self.setting.get("gpt_model", "GPT-3.5-turbo"),
+            "gpt_model": self.setting.get("gpt_model", "GPT-4o-mini"),
         }
         self.save_setting(self.setting)
         self.main_interface()

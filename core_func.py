@@ -93,7 +93,7 @@ def take_notes_chatgpt(
     transcription,
     language,
     api_token,
-    model_name="GPT-3.5-turbo",
+    model_name="GPT-4o-mini",
     save_reply=False,
     logger=None,
 ):
@@ -107,7 +107,14 @@ def take_notes_chatgpt(
         api_key=api_token,
     )
     logging.getLogger("openai").setLevel(logging.ERROR)
-    model = "gpt-3.5-turbo-0125" if model_name == "GPT-3.5-turbo" else "gpt-4o"
+    if model_name == "GPT-3.5-turbo":
+        model = "gpt-3.5-turbo-0125"
+    elif model_name == "GPT-4o-mini":
+        model = "gpt-4o-mini"
+    elif model_name == "GPT-4o":
+        model = "gpt-4o"
+    else:
+        model = "gpt-4o-mini"
     task_hint = f'take the well-structured notes (in {language})(in sequence) including all the detail information (especially the numeric data) in every knowledge point/topic(can be one or many) (especially arguments from both sides of the controversy) in the transcription. (Format the structure with "- " for the topic and "* " for a detail information under its topic, separate each topic with an empty line, for example "- A \n* a\n- B")'
     messages = [{"role": "system", "content": task_hint}]
     user_chunks = split_text_by_token_limit_tiktoken(transcription, token_limit=2000)

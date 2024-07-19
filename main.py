@@ -153,9 +153,9 @@ class App(ctk.CTk):
         self.label3 = ctk.CTkLabel(self.frame3, text="GPT model:")
         self.label3.grid(row=0, column=0, padx=10)
         self.opt_gpt = ctk.CTkOptionMenu(
-            self.frame3, values=["GPT-3.5-turbo", "GPT-4o"], width=150
+            self.frame3, values=["GPT-4o-mini", "GPT-3.5-turbo", "GPT-4o"], width=150
         )
-        self.opt_gpt.set(setting.get("gpt_model", "GPT-3.5-turbo"))
+        self.opt_gpt.set(setting.get("gpt_model", "GPT-4o-mini"))
         self.opt_gpt.grid(row=0, column=1, padx=10)
 
         # Create buttons for the main interface
@@ -270,6 +270,7 @@ class App(ctk.CTk):
                 transcription,
                 self.opt_lan.get(),
                 self.setting.get("chatgpt_api", ""),
+                model_name = self.opt_gpt.get(),
                 logger=logger,
             )
             self.update_progress_bar(1)

@@ -7,6 +7,7 @@ import tiktoken
 import requests
 import platform
 from openai import OpenAI
+import re
 
 
 language_dict = {
@@ -298,6 +299,7 @@ def split_text_by_token_limit_tiktoken(text, token_limit=3000, model="gpt-3.5-tu
 def parse_input(input_string):
     lines = input_string.strip().split("\n")
     blocks = []
+    last_bulleted_item = None
 
     for line in lines:
         line_strip = line.strip()
@@ -314,13 +316,43 @@ def parse_input(input_string):
                 }
             )
         elif line_strip.startswith("* "):
-            blocks.append(
+            bulleted_item = {
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {
+                    "rich_text": [
+                        {"type": "text", "text": {"content": line_strip[2:]}}
+                    ]
+                },
+            }
+            blocks.append(bulleted_item)
+            last_bulleted_item = bulleted_item  # Keep track of the last bulleted item
+        elif line_strip.startswith("** ") and last_bulleted_item:
+            # Add as a sub-item under the last bulleted list item
+            if "children" not in last_bulleted_item["bulleted_list_item"]:
+                last_bulleted_item["bulleted_list_item"]["children"] = []
+            last_bulleted_item["bulleted_list_item"]["children"].append(
                 {
                     "object": "block",
                     "type": "bulleted_list_item",
                     "bulleted_list_item": {
                         "rich_text": [
-                            {"type": "text", "text": {"content": line_strip[2:]}}
+                            {"type": "text", "text": {"content": line_strip[3:]}}
+                        ]
+                    },
+                }
+            )
+        elif line_strip and last_bulleted_item:
+            # Add as a sub-item under the last bulleted list item
+            if "children" not in last_bulleted_item["bulleted_list_item"]:
+                last_bulleted_item["bulleted_list_item"]["children"] = []
+            last_bulleted_item["bulleted_list_item"]["children"].append(
+                {
+                    "object": "block",
+                    "type": "bulleted_list_item",
+                    "bulleted_list_item": {
+                        "rich_text": [
+                            {"type": "text", "text": {"content": re.sub(r'^\*+\s', '', line_strip)}}
                         ]
                     },
                 }

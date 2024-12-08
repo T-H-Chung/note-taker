@@ -115,9 +115,15 @@ def take_notes_chatgpt(
         model = "gpt-4o"
     else:
         model = "gpt-4o-mini"
-    task_hint = f'take the well-structured notes (in {language})(in sequence) including all the detail information (especially the numeric data) in every knowledge point/topic(can be one or many) (especially arguments from both sides of the controversy) in the transcription. (Format the structure with "- " for the topic and "* " for a detail information under its topic, separate each topic with an empty line, for example "- A \n* a\n- B")'
+    task_hint = f'take the well-structured notes (in sequence) including all the detail information (especially the numeric data) \
+    in every knowledge point (especially arguments from both sides of the controversy) in the transcription. \
+    (Format the structure with "- " for the topic, "* " for a detail information under its topic and \
+    "** " for contents following by a ":" or a "?" or a list under a detail information, separate each topic with an empty line, \
+    for example "- A \n* a: \n** c \n- B \n* b") \
+    Please make sure the notes can cover all the sentences in the transcription. \
+    You can take a long notes to the limit to your maxinum token.'
     messages = [{"role": "system", "content": task_hint}]
-    user_chunks = split_text_by_token_limit_tiktoken(transcription, token_limit=2000)
+    user_chunks = split_text_by_token_limit_tiktoken(transcription, token_limit=1000)
     notes = ""
 
     for idx, chunk in enumerate(user_chunks):
@@ -130,11 +136,11 @@ def take_notes_chatgpt(
         messages.append(
             {
                 "role": "system",
-                "content": "Following is the next part. Continue the task.",
+                "content": "Following is the next part. Continue the task and try to append if there is obvious open ':' left in previous notes",
             }
         )
 
-        if len(messages) > 6:
+        if len(messages) > 9:
             messages.pop(1)
             messages.pop(1)
             messages.pop(1)
@@ -149,9 +155,15 @@ def take_notes_chatgpt(
             notes += chatgpt_reply_msg
         else:
             notes += "\n".join(chatgpt_reply_msg.split("\n")[1:])
+            
+    messages = [{"role": "system", "content": f"Translate to {language}."}]
+    messages.append({"role": "user", "content": notes})
+
+    chatgpt_reply = client.chat.completions.create(model=model, messages=messages)
+    translated_notes = chatgpt_reply.choices[0].message.content
 
     logger.info("Note-taking process completed.")
-    return notes
+    return translated_notes
 
 
 def create_notes_notion(

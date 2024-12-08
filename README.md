@@ -19,6 +19,9 @@
 > The corresponding subtitles will be downloaded if available. -> No time/GPU comsuming for transcription. \
 > **Spported Subtitles:** srt, vtt, ass
 
+> [!NOTE]
+> **Update for v1.3.0**: Now support for **GPT-4o mini**. "Significantly smarter, cheaper, and just as fast as GPT-3.5 Turbo," as OpenAI advertised.
+
 ## Quick Start
 ### Prerequisite
 - Your own [OpenAI API key](https://platform.openai.com/api-keys) (You need to have a balance)

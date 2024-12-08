@@ -119,7 +119,7 @@ def take_notes_chatgpt(
     in every knowledge point (especially arguments from both sides of the controversy) in the transcription. \
     (Format the structure with "- " for the topic, "* " for a detail information under its topic and \
     "** " for contents following by a ":" or a "?" or a list under a detail information, separate each topic with an empty line, \
-    for example "- A \n* a: \n** c \n- B \n* b") \
+    for example "- A \n* a: \n** b") \
     Please make sure the notes can cover all the sentences in the transcription. \
     You can take a long notes to the limit to your maxinum token.'
     messages = [{"role": "system", "content": task_hint}]

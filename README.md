@@ -20,7 +20,7 @@
 > **Spported Subtitles:** srt, vtt, ass
 
 > [!NOTE]
-> **Update for v1.3.0**: Now support for **GPT-4o mini**. "Significantly smarter, cheaper, and just as fast as GPT-3.5 Turbo," as OpenAI advertised.
+> **Update for v1.4.0**: Now Note-Taker produces higher quality notes in correct language! Also, disable GPT 3.5 for better maintenance, use 4o-mini instead. 
 
 ## Quick Start
 ### Prerequisite
